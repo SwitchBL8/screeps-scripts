@@ -36,10 +36,10 @@ module.exports.loop = function () {
         Game.spawns.Home.createCreep([WORK, CARRY, MOVE], 'Harvester1', { role: 'harvester'});
     }
     if(global.creepRoleCount["builder"] < 2) {
-        Game.spawns.Home.createCreep([WORK, CARRY, MOVE], 'Builder1', { role: 'builder'});
+        Game.spawns.Home.createCreep([WORK, CARRY, MOVE], 'Builder'.concat(global.creepRoleCount["builder"] + 1), { role: 'builder'});
     }
 
-    if(global.creepRoleCount["upgrader"] < 1) {
+    if(global.creepRoleCount["upgrader"] < 2) {
         Game.spawns.Home.createCreep([WORK, WORK, CARRY, MOVE], 'Upgrader'.concat(global.creepRoleCount["upgrader"] + 1), { role: 'upgrader'});
     }
     if(global.creepRoleCount["guard"] < 3) {
