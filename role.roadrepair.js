@@ -7,12 +7,12 @@ var roadRepairer = {
                 creep.moveTo(spawn);
             }
             if ((spawn) > [199]) {
-                spwn.transferEnergy(creep);
+                spawn.transferEnergy(creep);
             }
         }
         else {
 
-            var roadToRepair = creep.pos.findClosest(FIND_STRUCTURES, {
+            var roadToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (object) {
                     if (object.structureType != STRUCTURE_ROAD) {
                         return false;
