@@ -21,9 +21,17 @@ global.GetCreepsByRole = function(role){
   return CreepList
 };
 
+global.removeDeadCreeps = function() {
+    for(var name in Memory.creeps) {
+           if(!Game.creeps[name]) {
+               delete Memory.creeps[name];
+           }
+       }
+}
+
 module.exports.loop = function () {
 
-    
+    global.removeDeadCreeps();
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
         if (creep.memory.role == 'harvester') { roleHarvester.run(creep); }
@@ -35,7 +43,7 @@ module.exports.loop = function () {
     var now = new Date();
     var creepSuffix = now.getDate() + now.getHours();
     if(global.creepRoleCount["harvester"] == 0) {
-        Game.spawns.Home.createCreep([WORK, CARRY, MOVE], 'Harvester1', { role: 'harvester'});
+        Game.spawns.Home.createCreep([WORK, CARRY, MOVE, MOVE], 'Harvester1', { role: 'harvester'});
     }
     if(global.creepRoleCount["builder"] < 2) {
         Game.spawns.Home.createCreep([WORK, CARRY, MOVE], 'Builder'.concat(creepSuffix), { role: 'builder'});
