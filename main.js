@@ -2,10 +2,11 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleGuard = require('role.guard');
+var roleRoadRepairer = require('role.roadrepairer');
 
 //global.creepRoleCount = {};
 global.countRoles = function() {
-    global.creepRoleCount = { "harvester": 0, "builder": 0, "upgrader": 0, "guard": 0};
+    global.creepRoleCount = { "harvester": 0, "builder": 0, "upgrader": 0, "guard": 0, "roadrepairer": 0};
     for(var i in Game.creeps){
         global.creepRoleCount[Game.creeps[i].memory.role] += 1;
     }
@@ -38,12 +39,13 @@ module.exports.loop = function () {
         if (creep.memory.role == 'upgrader') { roleUpgrader.run(creep); }
         if (creep.memory.role == 'builder') { roleBuilder.run(creep); }
         if( creep.memory.role == 'guard'){ roleGuard.run(creep);}
+        if( creep.memory.role == 'roadrepairer'){ roleRoadRepairer.run(creep);}
     }
     countRoles();
     var now = new Date();
     var creepSuffix = now.getDate() + now.getHours();
-    if(global.creepRoleCount["harvester"] == 0) {
-        Game.spawns.Home.createCreep([WORK, CARRY, MOVE, MOVE], 'Harvester1', { role: 'harvester'});
+    if(global.creepRoleCount["harvester"] < 2) {
+        Game.spawns.Home.createCreep([WORK, CARRY, MOVE, MOVE], 'Harvester'.concat(creepSuffix), { role: 'harvester'});
     }
     if(global.creepRoleCount["builder"] < 2) {
         Game.spawns.Home.createCreep([WORK, CARRY, MOVE], 'Builder'.concat(creepSuffix), { role: 'builder'});
@@ -52,7 +54,10 @@ module.exports.loop = function () {
     if(global.creepRoleCount["upgrader"] < 2) {
         Game.spawns.Home.createCreep([WORK, WORK, CARRY, MOVE], 'Upgrader'.concat(creepSuffix), { role: 'upgrader'});
     }
-    if(global.creepRoleCount["guard"] < 3) {
+    if(global.creepRoleCount["roadrepairer"] < 2) {
+        Game.spawns.Home.createCreep([WORK, WORK, CARRY, MOVE], 'RoadRepairer'.concat(creepSuffix), { role: 'roadrepairer'});
+    }
+    if(global.creepRoleCount["guard"] < 2) {
         //console.log("Spawning guard: " + 
         Game.spawns.Home.createCreep([TOUGH, ATTACK, RANGED_ATTACK, MOVE], 'Guard'.concat(creepSuffix) , { role: 'guard'});//);
     }
